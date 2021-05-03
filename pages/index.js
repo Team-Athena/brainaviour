@@ -34,7 +34,7 @@ export default function Home() {
           <Image src="/brain.png"
           alt="test"
           width="600"
-          height="600"
+          height="620"
           layout="fixed" />
         </div>
       </div>

@@ -24,6 +24,7 @@ export const HeaderItem = styled.div`
     cursor: pointer;
     width: 1;
     text-decoration: none;
+    color: ${colors.action}70;
 
     &:after {
         display: block;
