@@ -50,7 +50,7 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderText = styled.h1`
     font-weight: ${weights.bold};
-    font-size: 22px;
+    font-size: 20px;
     cursor: pointer;
 `;
 

@@ -1,6 +1,8 @@
+import { useState } from "react"
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import Menubar from 'components/Menubar'
+import Dashboard from "../components/Dashboard"
 import { colors } from 'styles/colors'
 
 const DefaultText = styled.h1`
@@ -19,13 +21,16 @@ const MainContainer = styled.div`
 `;
 
 export default function Explore() {
+    const [isPredicting, setPredicting ] = useState(false)
+
   return (
     <MainContainer>
         <Grid container item xs={12} direction="column">
-            <Menubar />
+            <Menubar setPredicting={setPredicting}/>
         </Grid>
         <Grid container item xs={12} justify="center" alignItems="center">
-            <DefaultText styles>Start by uploading a dataset</DefaultText>
+            {!isPredicting && <DefaultText styles>Start by uploading a dataset</DefaultText>}
+            {isPredicting && <Dashboard />}
         </Grid>
     </MainContainer>
   )
