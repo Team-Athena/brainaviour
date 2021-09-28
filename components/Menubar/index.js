@@ -9,7 +9,7 @@ import axios from 'axios'
 
 
 
-export default function Menubar({ setPredicting }) {
+export default function Menubar({ setPredicting, setMetrics }) {
     const [behaviour, setBehaviour] = useState('')
     const [loaded, setLoaded] = useState(false)
     const [filename, setFilename] = useState('Upload a dataset...')
@@ -22,6 +22,20 @@ export default function Menubar({ setPredicting }) {
     const startPrediction = () => {
         setPredicting(true)
         setLoaded(true)
+        
+        axios.get(`http://localhost:5000/predict/ListSort_Unadj`).then(res => {
+            console.log('response' , res.data)
+            setMetrics({
+            "behavior": "bla",
+            "correlation": 0.058,
+            "epochs": res.data.epochs,
+            "mae": res.data.mae,
+            "mse": 12,
+            "predicted_score": 1
+        })
+        }
+
+        )
     }
 
     const uploadDataset = (e) => {

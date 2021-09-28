@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core"
 import Metric from "./Metric"
 import Image from "next/image"
 
-export default function Dashboard() {
+export default function Dashboard({ metrics }) {
     return (
         <Grid container spacing={2} style={{ marginTop: 20 }}>
             <Grid item xs={4}>
@@ -11,13 +11,13 @@ export default function Dashboard() {
             <Grid item xs={8}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Metric name="MSE" value={0.01} isLoading/>
+                        <Metric name="MSE" value={metrics.mse} isLoading/>
                     </Grid>
                     <Grid item xs={6}>
-                        <Metric name="MAE" value={0.93} isLoading/>
+                        <Metric name="MAE" value={metrics.mae} isLoading/>
                     </Grid>
                     <Grid item xs={6}>
-                        <Metric name="Correlation" value={0.082} isLoading/>
+                        <Metric name="Correlation" value={metrics.correlation} isLoading/>
                     </Grid>
                     <Grid item xs={6}>
                         <Metric name="Epochs" value={100} isLoading/>
