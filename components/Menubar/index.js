@@ -9,29 +9,33 @@ import axios from 'axios'
 
 
 
-export default function Menubar({ setPredicting, setMetrics }) {
-    const [behaviour, setBehaviour] = useState('')
+export default function Menubar({ setPredicting, setMetrics, setBehaviour, behaviour }) {
     const [loaded, setLoaded] = useState(false)
     const [filename, setFilename] = useState('Upload a dataset...')
     const [open, setOpen] = useState(false)
     const [success, setSuccess] = useState(false)
     const [uploading, setUploading] = useState(false)
     const hiddenInput = useRef()
+    const shortName = {
+        "Working Memory" : "ListSort_Unadj",
+        "Processing Speed" : "ProcSpeed_Unadj",
+        "Fluid Intelligence" : "PMAT24_A_CR"
+    }
 
 
     const startPrediction = () => {
         setPredicting(true)
         setLoaded(true)
         
-        axios.get(`http://localhost:5000/predict/ListSort_Unadj`).then(res => {
+        axios.get(`http://localhost:5000/predict/${shortName[behaviour]}`).then(res => {
             console.log('response' , res.data)
             setMetrics({
-            "behavior": "bla",
-            "correlation": 0.058,
+            "behavior": res.data.behavior,
+            "correlation": res.data.correlation,
             "epochs": res.data.epochs,
             "mae": res.data.mae,
-            "mse": 12,
-            "predicted_score": 1
+            "mse": res.data.mse,
+            "predicted_score": res.data.predicted_score
         })
         }
 
