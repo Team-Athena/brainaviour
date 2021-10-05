@@ -2,11 +2,11 @@ import { Grid } from "@material-ui/core"
 import Metric from "./Metric"
 import Image from "next/image"
 
-export default function Dashboard({ metrics }) {
+export default function Dashboard({ metrics, matrix }) {
     return (
         <Grid container spacing={2} style={{ marginTop: 20 }}>
             <Grid item xs={6}>
-                <Image src="/matrix.png" alt="Matrix" width={400} height={300} />
+                <Image src={matrix} alt="Matrix" width={400} height={300} />
             </Grid>
             <Grid item xs={6}>
                 <Grid container spacing={2}>

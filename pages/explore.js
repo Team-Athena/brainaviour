@@ -28,26 +28,46 @@ export default function Explore() {
     const [isPredicting, setPredicting ] = useState(false)
     const [metrics, setMetrics] = useState({})
     const [behaviour, setBehaviour] = useState('')
+    const [image, setImage] = useState('https://via.placeholder.com/150')
     const [brain, setBrain] = useState('')
-    const [image, setImage] = useState('https://via.placeholder.com/500')
+    const [matrix, setMatrix] = useState('')
 
-    const shortNames = {
-        "Working Memory": "ListSort_Unadj"
+    const shortName = {
+        "Working Memory" : "ListSort_Unadj",
+        "Processing Speed" : "ProcSpeed_Unadj",
+        "Fluid Intelligence" : "PMAT24_A_CR"
     }
 
     useEffect(async () => {
         if (behaviour !== '') {
-            // axios.get(`http://localhost:5000/architecture/${shortName[behaviour]}`).then(response => {
-            //     setImage(response.config.url)
-            //     }
-            // )
-            await axios.get('http://localhost:5000/3d-graph/ListSort_Unadj').then(res => {
-                setBrain(res.data)
-                console.log('brain', res)
+            axios.get(`http://localhost:5000/architecture/${shortName[behaviour]}`).then(response => {
+                setImage(response.config.url)
             })
+            await axios.get(`http://localhost:5000/3d-graph/${shortName[behaviour]}`).then(res => {
+                setBrain(res.data)
+            })
+            await axios.get(`http://localhost:5000/graphs/${shortName[behaviour]}`).then(res => {
+                setMatrix(response.config.url)
+        })
+        
         }
     }, [isPredicting])
 
+    // const behaviour
+
+    // const imgUrl = () => {
+    //     axios.get(`http://localhost:5000/architecture/${behaviour}`).then(response => {
+    //         setState({image:response.config.url})
+    // })
+    // }
+
+    // useEffect(() => {
+    //     if (behaviour !== '') {
+    //         axios.get(`http://localhost:5000/architecture/${behaviour}`).then(
+    //         setImage({image:response.config.url})
+    //         )
+    //     }
+    // }, [behaviour])
 
 
   return (
@@ -55,19 +75,41 @@ export default function Explore() {
         <Grid container item xs={12} direction="column">
             <Menubar setPredicting={setPredicting} setMetrics={setMetrics} setBehaviour={setBehaviour} behaviour={behaviour}/>
         </Grid>
+        {/* <Grid container item xs={12} justify="center" alignItems="center">
+            {!isPredicting && <DefaultText styles>Start by uploading a dataset</DefaultText>}
+            {isPredicting && <Dashboard metrics={metrics}/>}
+            <Image loader={() => image} src={image} layout="fill"/>
+        </Grid> */}
+        {/* <Grid item xs={12} justify="center" alignItems="center"> */}
+            {/* <Image src={image} layout="fill"/> */}
+            {/* <Image loader={() => image} src={image} layout="fill"/>  */}
+        {/* </Grid> */}
+        
+        {/* <Grid container item xs={12} justify="center" alignItems="center">
+            <Grid item xs = {12}>  
+                {!isPredicting && <DefaultText styles>Start by uploading a dataset</DefaultText>}
+                {isPredicting && <Dashboard metrics={metrics}/>}
+            </Grid>
+            <Grid item xs = {12}>
+                <Image loader={() => image} src={image} width = {500} height = {500}/>
+            </Grid>
+        </Grid> */}
+
         <Grid container item xs={12} justify="center" alignItems="center">
             <Grid item xs={!isPredicting ? 12 : 7}>
                 {!isPredicting && <DefaultText styles>Start by uploading a dataset</DefaultText>}
-                {isPredicting && <Dashboard metrics={metrics} behaviour={behaviour} />}
+                {isPredicting && <Dashboard metrics={metrics} behaviour={behaviour} matrix={matrix}/>}
             </Grid>
             {isPredicting && 
             <Grid item xs={5} style={{display: 'flex', justifyContent: 'center', paddingTop: 50}}>
                 <InnerHTML html={brain}/>
             </Grid>}
         </Grid>
-        {/* <Grid container item xs={12} justify="center" alignItems="center">
-            <Image loader={() => image} src={image} width={500} height={500}/>
-        </Grid> */}
+        <Grid item xs={12} justify="center" alignItems="center" style = {{marginTop:"5vh", paddingBottom:"5vh"}}>
+            {/* <Image src={image} layout="fill"/> */}
+            {isPredicting && <Image loader={() => image} src={image} layout="responsive" width = {500} height = {200}/>}
+            {/* <Image loader={() => image} src={image} width = {500} height = {500}/>  */}
+        </Grid>
     </MainContainer>
   )
 }
