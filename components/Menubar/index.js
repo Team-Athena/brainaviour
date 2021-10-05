@@ -9,8 +9,8 @@ import axios from 'axios'
 
 
 
-export default function Menubar({ setPredicting, setMetrics }) {
-    const [behaviour, setBehaviour] = useState('')
+export default function Menubar({ setPredicting, setMetrics, setBehaviour, behaviour }) {
+    // const [behaviour, setBehaviour] = useState('')
     const [loaded, setLoaded] = useState(false)
     const [filename, setFilename] = useState('Upload a dataset...')
     const [open, setOpen] = useState(false)
@@ -56,11 +56,11 @@ export default function Menubar({ setPredicting, setMetrics }) {
                     setUploading(false)
                 }
             }).catch(err => {
-                if (err.response.status === 400) {
+                if (err.status === 400) {
                     setUploading(false)
                     setOpen(true)
                 }
-                console.log('err', err.response.status)
+                console.log('err', err.status)
             })
         } else {
             setFilename('Upload a dataset...')
@@ -128,7 +128,7 @@ export default function Menubar({ setPredicting, setMetrics }) {
 
             <Grid item container xs={2} alignItems="flex-end" justify="center">
                 {/* <TrainButton style={{fontSize: 90}}/> */}
-                <TrainButton onClick={() => startPrediction()}>Start Training</TrainButton>
+                <TrainButton onClick={() => startPrediction()}>Predict</TrainButton>
             </Grid>
 
             <Grid item container xs={2} alignItems="flex-end" justify="center">

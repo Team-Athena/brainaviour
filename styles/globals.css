@@ -14,3 +14,35 @@ a {
 * {
   box-sizing: border-box;
 }
+
+[class="main-svg"]  {
+  position: absolute !important;
+  width: 30vw !important;
+  height: 350px !important;
+  margin-left: 10px;
+  border-radius: 5px;
+  
+}
+
+[class="plot-container"]  {
+  position: absolute !important;
+  width: 30vw !important;
+  height: 350px !important;
+  background-color: white;
+  border-radius: 5px;
+}
+
+[class="svg-container"]  {
+  width: 30vw !important;
+  height: 350px !important;
+  background-color: white;
+  border-radius: 5px;
+}
+
+[id="scene"]  {
+  position: absolute  !important;
+  background-color: white;
+  width: 30vw !important;
+  height: 350px !important;
+  border-radius: 5px;
+}
