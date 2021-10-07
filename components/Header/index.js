@@ -17,12 +17,12 @@ export default function Header () {
                     <Link href="/explore">Explore</Link>
                 </HeaderText>
             </HeaderItem>
-            <HeaderItem>
+            {/* <HeaderItem>
                 <HeaderText>Research</HeaderText>
             </HeaderItem>
             <HeaderItem>
                 <HeaderText>About Us</HeaderText>
-            </HeaderItem>
+            </HeaderItem> */}
         </MainHeader>
     )
 }

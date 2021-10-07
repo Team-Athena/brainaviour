@@ -16,11 +16,6 @@ export default function Home() {
           <div>
             <button className={styles.mainButton}>
               <Link href="/explore">
-                Test sample dataset
-              </Link>
-            </button>
-            <button className={styles.mainButton}>
-              <Link href="/explore">
                 Upload dataset
               </Link>
             </button>

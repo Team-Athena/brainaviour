@@ -2,9 +2,9 @@ import { useRef } from 'react'
 import Grid from '@material-ui/core/Grid'
 import { CircularProgress, Snackbar } from '@material-ui/core';
 import Alert from "@material-ui/lab/Alert"
-import {UploadButton, ResultsButton, MenuLabel, MenuText, TrainButton, Dropdown, DropdownButton, DropdownItem, DropdownContent } from "./styles"
+import {UploadButton, MenuLabel, MenuText, TrainButton, Dropdown, DropdownButton, DropdownItem, DropdownContent } from "./styles"
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { useEffect, useState } from 'react' 
+import { useState } from 'react' 
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
