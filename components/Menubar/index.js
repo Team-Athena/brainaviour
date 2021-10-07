@@ -30,9 +30,16 @@ export default function Menubar({ getGraphs, setMetrics, setBehaviour, behaviour
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: 'No dataset uploaded'
+                text: 'No dataset uploaded!'
               })
             return
+        } else if (behaviour === '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'No behaviour selected!'
+              })
+            return        
         }
         setLoaded(true)
         setHasPredicted(false)
