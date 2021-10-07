@@ -82,7 +82,7 @@ export default function Menubar({ getGraphs, setMetrics, setBehaviour, behaviour
                     setUploading(false)
                 }
             }).catch(err => {
-                if (err.status === 400) {
+                if (err.response.status === 400) {
                     setUploading(false)
                     setOpen(true)
                     Swal.fire({
