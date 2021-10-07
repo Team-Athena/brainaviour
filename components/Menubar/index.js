@@ -85,6 +85,11 @@ export default function Menubar({ getGraphs, setMetrics, setBehaviour, behaviour
                 if (err.status === 400) {
                     setUploading(false)
                     setOpen(true)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Incorrect file type! Only .pkl file type is supported.'
+                    })
                 }
                 console.log('err', err.status)
             })
