@@ -138,7 +138,8 @@ export default function Explore() {
             <>
                 <Grid item xs={5}>
                     <h2>Brain Connectome Model</h2>
-                    <InnerHTML html={brain}/>
+                    {brain === '' && <Skeleton variant="rectangular" width={300} height={200} />}
+                    {brain !== '' && <InnerHTML html={brain}/>}
                 </Grid>
                 <Grid item xs={7}>
                     <h2>{`${shortName[behaviour]} Architecture Model`}</h2>
