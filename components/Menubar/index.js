@@ -9,11 +9,8 @@ import axios from 'axios'
 
 
 
-export default function Menubar({ setPredicting, setMetrics, setBehaviour, behaviour }) {
-<<<<<<< HEAD
+export default function Menubar({ getGraphs, setMetrics, setBehaviour, behaviour, setHasPredicted , setLoading}) {
     // const [behaviour, setBehaviour] = useState('')
-=======
->>>>>>> ed2c89df033df918fe2f884d7489230836b6c401
     const [loaded, setLoaded] = useState(false)
     const [filename, setFilename] = useState('Upload a dataset...')
     const [open, setOpen] = useState(false)
@@ -27,11 +24,14 @@ export default function Menubar({ setPredicting, setMetrics, setBehaviour, behav
     }
 
 
-    const startPrediction = () => {
-        setPredicting(true)
+    const startPrediction = async () => {
         setLoaded(true)
+        setHasPredicted(false)
+        setLoading(true)
+
+        await getGraphs()
         
-        axios.get(`http://localhost:5000/predict/${shortName[behaviour]}`).then(res => {
+        await axios.get(`http://localhost:5000/predict/${shortName[behaviour]}`).then(res => {
             console.log('response' , res.data)
             setMetrics({
             "behavior": res.data.behavior,
@@ -41,6 +41,8 @@ export default function Menubar({ setPredicting, setMetrics, setBehaviour, behav
             "mse": res.data.mse,
             "predicted_score": res.data.predicted_score
         })
+        setLoaded(false)
+        setLoading(false)
         }
 
         )
@@ -75,12 +77,6 @@ export default function Menubar({ setPredicting, setMetrics, setBehaviour, behav
         }
     }
 
-    useEffect(() => {
-        setTimeout(() => {
-            setLoaded(false)
-        }, 5000)
-    }, [loaded])
-
     return (
         <Grid container spacing={2} wrap="nowrap">
             <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{vertical: 'top', horizontal: 'center'}} onClose={() => setOpen(false)}>
@@ -89,7 +85,7 @@ export default function Menubar({ setPredicting, setMetrics, setBehaviour, behav
             <Snackbar open={success} autoHideDuration={2000} anchorOrigin={{vertical: 'top', horizontal: 'center'}} onClose={() => setSuccess(false)}>
                 <Alert severity="success" variant="filled">Successfully uploaded dataset!</Alert>
             </Snackbar>
-            <Grid item xs={4} style={{marginRight: 15}}>
+            <Grid item xs={5}>
                 <Grid item>
                     <MenuLabel>Time Series Dataset</MenuLabel>
                 </Grid>
@@ -102,7 +98,7 @@ export default function Menubar({ setPredicting, setMetrics, setBehaviour, behav
                     <Grid item xs={4}>
                         <UploadButton onClick={uploadDataset}>
                             {!uploading && "Upload"}
-                            {uploading  && <CircularProgress color="white" size={15}/>}
+                            {uploading  && <CircularProgress color="inherit" size={15}/>}
                         </UploadButton>
                     </Grid>
                     
@@ -111,7 +107,7 @@ export default function Menubar({ setPredicting, setMetrics, setBehaviour, behav
                 </Grid>
             </Grid>
 
-            <Grid item xs={5}>
+            <Grid item xs={7}>
                 <Grid item>
                     <MenuLabel>Behaviour</MenuLabel>
                 </Grid>
@@ -136,15 +132,15 @@ export default function Menubar({ setPredicting, setMetrics, setBehaviour, behav
 
             <Grid item container xs={2} alignItems="flex-end" justify="center">
                 {/* <TrainButton style={{fontSize: 90}}/> */}
-                <TrainButton onClick={() => startPrediction()}>Predict</TrainButton>
+                <TrainButton onClick={startPrediction}>Predict</TrainButton>
             </Grid>
 
-            <Grid item container xs={2} alignItems="flex-end" justify="center">
+            {/* <Grid item container xs={2} alignItems="flex-end" justify="center">
                 <ResultsButton>
                     {!loaded && "View Results"}
                     {loaded && <CircularProgress size={16}/>}
                 </ResultsButton>
-            </Grid>
+            </Grid> */}
         </Grid>
     )
 }

@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Menubar from 'components/Menubar'
 import Dashboard from "../components/Dashboard"
 import { colors } from 'styles/colors'
+import { Skeleton } from "@material-ui/lab"
 import axios from "axios"
 import InnerHTML from 'dangerously-set-html-content'
 
@@ -26,11 +27,13 @@ const MainContainer = styled.div`
 
 export default function Explore() {
     const [isPredicting, setPredicting ] = useState(false)
+    const [hasPredicted, setHasPredicted] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [metrics, setMetrics] = useState({})
     const [behaviour, setBehaviour] = useState('')
     const [image, setImage] = useState('https://via.placeholder.com/150')
     const [brain, setBrain] = useState('')
-    const [matrix, setMatrix] = useState('')
+    const [matrix, setMatrix] = useState('https://via.placeholder.com/150')
 
     const shortName = {
         "Working Memory" : "ListSort_Unadj",
@@ -38,20 +41,42 @@ export default function Explore() {
         "Fluid Intelligence" : "PMAT24_A_CR"
     }
 
-    useEffect(async () => {
-        if (behaviour !== '') {
-            axios.get(`http://localhost:5000/architecture/${shortName[behaviour]}`).then(response => {
-                setImage(response.config.url)
-            })
-            await axios.get(`http://localhost:5000/3d-graph/${shortName[behaviour]}`).then(res => {
-                setBrain(res.data)
-            })
-            await axios.get(`http://localhost:5000/graphs/${shortName[behaviour]}`).then(res => {
-                setMatrix(response.config.url)
+    const getGraphs = async () => {
+        console.log("getGraphs called...")
+        // if (hasPredicted === false) {
+        console.log("Getting graphs...")
+        // setHasPredicted(true)
+        setPredicting(true)
+        await axios.get(`http://localhost:5000/architecture/${shortName[behaviour]}`).then(response => {
+            setImage(response.config.url)
         })
-        
-        }
-    }, [isPredicting])
+        await axios.get(`http://localhost:5000/graphs/${shortName[behaviour]}`).then(res => {
+            console.log('matrix', res)
+            setMatrix(res.config.url)
+        })
+        await axios.get(`http://localhost:5000/3d-graph/${shortName[behaviour]}`).then(res => {
+            setBrain(res.data)
+            setPredicting(true)
+        })
+    }
+
+    // useEffect(async () => {
+    //     console.log('called!', hasPredicted)
+    //     if (!hasPredicted) {
+
+    //         // axios.get(`http://localhost:5000/architecture/${shortName[behaviour]}`).then(response => {
+    //         //     setImage(response.config.url)
+    //         // })
+    //         axios.get(`http://localhost:5000/graphs/${shortName[behaviour]}`).then(res => {
+    //             console.log('matrix', res)
+    //             setMatrix(res.config.url)
+    //         })
+    //         await axios.get(`http://localhost:5000/3d-graph/${shortName[behaviour]}`).then(res => {
+    //             setBrain(res.data)
+    //         })
+    //         setHasPredicted(true)
+    //     }
+    // }, [isPredicting, hasPredicted])
 
     // const behaviour
 
@@ -73,7 +98,14 @@ export default function Explore() {
   return (
     <MainContainer>
         <Grid container item xs={12} direction="column">
-            <Menubar setPredicting={setPredicting} setMetrics={setMetrics} setBehaviour={setBehaviour} behaviour={behaviour}/>
+            <Menubar 
+                getGraphs={getGraphs}   
+                setMetrics={setMetrics} 
+                setBehaviour={setBehaviour} 
+                behaviour={behaviour} 
+                setHasPredicted={setHasPredicted}
+                setLoading={setLoading}
+                />
         </Grid>
         {/* <Grid container item xs={12} justify="center" alignItems="center">
             {!isPredicting && <DefaultText styles>Start by uploading a dataset</DefaultText>}
@@ -96,19 +128,25 @@ export default function Explore() {
         </Grid> */}
 
         <Grid container item xs={12} justify="center" alignItems="center">
-            <Grid item xs={!isPredicting ? 12 : 7}>
-                {!isPredicting && <DefaultText styles>Start by uploading a dataset</DefaultText>}
-                {isPredicting && <Dashboard metrics={metrics} behaviour={behaviour} matrix={matrix}/>}
+            <Grid item xs={12}>
+                {!isPredicting && <DefaultText styles>💡 Start by uploading a dataset</DefaultText>}
+                {isPredicting && <Dashboard metrics={metrics} behaviour={behaviour} matrix={matrix} loading={loading}/>}
             </Grid>
-            {isPredicting && 
-            <Grid item xs={5} style={{display: 'flex', justifyContent: 'center', paddingTop: 50}}>
-                <InnerHTML html={brain}/>
-            </Grid>}
         </Grid>
-        <Grid item xs={12} justify="center" alignItems="center" style = {{marginTop:"5vh", paddingBottom:"5vh"}}>
-            {/* <Image src={image} layout="fill"/> */}
-            {isPredicting && <Image loader={() => image} src={image} layout="responsive" width = {500} height = {200}/>}
-            {/* <Image loader={() => image} src={image} width = {500} height = {500}/>  */}
+        <Grid container item xs={12} justify="center" alignItems="flex-start" style = {{paddingBottom:"5vh", paddingTop: "3vh"}}>
+            {isPredicting && 
+            <>
+                <Grid item xs={5}>
+                    <h2>Brain Connectome Model</h2>
+                    <InnerHTML html={brain}/>
+                </Grid>
+                <Grid item xs={7}>
+                    <h2>{`${shortName[behaviour]} Architecture Model`}</h2>
+                    {image === 'https://via.placeholder.com/150' && <Skeleton variant="rectangular" width={500} height={200} />}
+                    {isPredicting && image !== 'https://via.placeholder.com/150' && <Image loader={() => image} src={image} layout="responsive" width = {700} height = {250}/>}
+                </Grid>
+            </>
+            }
         </Grid>
     </MainContainer>
   )
