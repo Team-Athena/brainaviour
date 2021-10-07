@@ -6,6 +6,7 @@ import {UploadButton, ResultsButton, MenuLabel, MenuText, TrainButton, Dropdown,
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useEffect, useState } from 'react' 
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 
 
@@ -25,6 +26,14 @@ export default function Menubar({ getGraphs, setMetrics, setBehaviour, behaviour
 
 
     const startPrediction = async () => {
+        if (filename === 'Upload a dataset...') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'No dataset uploaded'
+              })
+            return
+        }
         setLoaded(true)
         setHasPredicted(false)
         setLoading(true)
