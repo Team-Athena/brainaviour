@@ -45,6 +45,16 @@ export default function Explore() {
         console.log("getGraphs called...")
         // if (hasPredicted === false) {
         console.log("Getting graphs...")
+        axios.get(`http://localhost:5000/predict/${shortName[behaviour]}`).then(res => {
+            console.log('response' , res.data)
+            setMetrics({
+            "behavior": res.data.behavior,
+            "correlation": res.data.correlation,
+            "epochs": res.data.epochs,
+            "mae": res.data.mae,
+            "mse": res.data.mse,
+            "predicted_score": res.data.predicted_score
+        })
         // setHasPredicted(true)
         setPredicting(true)
         await axios.get(`http://localhost:5000/architecture/${shortName[behaviour]}`).then(response => {

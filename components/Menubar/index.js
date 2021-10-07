@@ -47,16 +47,16 @@ export default function Menubar({ getGraphs, setMetrics, setBehaviour, behaviour
 
         await getGraphs()
         
-        await axios.get(`http://localhost:5000/predict/${shortName[behaviour]}`).then(res => {
-            console.log('response' , res.data)
-            setMetrics({
-            "behavior": res.data.behavior,
-            "correlation": res.data.correlation,
-            "epochs": res.data.epochs,
-            "mae": res.data.mae,
-            "mse": res.data.mse,
-            "predicted_score": res.data.predicted_score
-        })
+        // await axios.get(`http://localhost:5000/predict/${shortName[behaviour]}`).then(res => {
+        //     console.log('response' , res.data)
+        //     setMetrics({
+        //     "behavior": res.data.behavior,
+        //     "correlation": res.data.correlation,
+        //     "epochs": res.data.epochs,
+        //     "mae": res.data.mae,
+        //     "mse": res.data.mse,
+        //     "predicted_score": res.data.predicted_score
+        // })
         setLoaded(false)
         setLoading(false)
         }
