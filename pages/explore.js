@@ -54,7 +54,7 @@ export default function Explore() {
             "mae": res.data.mae,
             "mse": res.data.mse,
             "predicted_score": res.data.predicted_score
-        })
+        })})
         // setHasPredicted(true)
         setPredicting(true)
         await axios.get(`http://localhost:5000/architecture/${shortName[behaviour]}`).then(response => {
