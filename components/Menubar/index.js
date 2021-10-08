@@ -59,9 +59,8 @@ export default function Menubar({ getGraphs, setMetrics, setBehaviour, behaviour
         // })
         setLoaded(false)
         setLoading(false)
-        }
 
-        )
+        
     }
 
     const uploadDataset = (e) => {
